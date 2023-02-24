@@ -51,19 +51,22 @@ public class JdwpClient
 		var str = Encoding.ASCII.GetString(buffer, 0, read);
 
 		Debug.WriteLine($"RX: {str}");
-		
+
 		if (str.Equals(handshake))
 		{
 			// Send version request command to kick things off
-			Send(new VersionCommandPacket());
-		}
+			await Send(new VersionCommandPacket(), cancellationToken);
 
-		Task.Run(async () =>
+			// TODO:
+			//var replyPacket = await ReadReply(cancellationToken);
+
+			//if (replyPacket is not null)
+			//	Debug.WriteLine($"RX Reply: {replyPacket.Id}, Data len: {replyPacket.Data.Length}");
+		}
+		else
 		{
-			
-		});
-		
-		//throw new InvalidDataException($"Debugger response did not match expected value: '{handshake}'");
+			throw new InvalidDataException($"Debugger response did not match expected value: '{handshake}'");
+		}
 	}
 
 	async Task<ReplyPacket?> ReadReply(CancellationToken cancellationToken = default)
