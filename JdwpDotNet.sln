@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33402.96
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JdwpDotNet", "JdwpDotNet\JdwpDotNet.csproj", "{C387EC9B-AED2-4A7B-80B1-32B2693ABF7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JdwpDotNetLib", "JdwpDotNetLib\JdwpDotNetLib.csproj", "{2ACF5417-A6C9-4915-916B-7DCAB972170C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C387EC9B-AED2-4A7B-80B1-32B2693ABF7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C387EC9B-AED2-4A7B-80B1-32B2693ABF7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C387EC9B-AED2-4A7B-80B1-32B2693ABF7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C387EC9B-AED2-4A7B-80B1-32B2693ABF7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ACF5417-A6C9-4915-916B-7DCAB972170C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ACF5417-A6C9-4915-916B-7DCAB972170C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ACF5417-A6C9-4915-916B-7DCAB972170C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ACF5417-A6C9-4915-916B-7DCAB972170C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ECF4324B-104C-4F6A-95C3-6631EC667297}
+	EndGlobalSection
+EndGlobal
