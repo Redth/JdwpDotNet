@@ -6,7 +6,7 @@ namespace JdwpDotNet;
 
 public class ReplyPacket : Packet
 {
-	public ReplyPacket(ReadOnlyMemory<byte> header, ReadOnlyMemory<byte> data)
+	public void FromMemory(ReadOnlyMemory<byte> header, ReadOnlyMemory<byte> data)
 	{
 		Id = BinaryPrimitives.ReadInt32BigEndian(header[4..7].Span);
 		Flags = header.Span[8];

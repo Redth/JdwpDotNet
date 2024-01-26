@@ -58,10 +58,10 @@ public class JdwpClient
 			await Send(new VersionCommandPacket(), cancellationToken);
 
 			// TODO:
-			//var replyPacket = await ReadReply(cancellationToken);
+			var replyPackets = await ReadReply<ReplyPacket>(cancellationToken);
 
-			//if (replyPacket is not null)
-			//	Debug.WriteLine($"RX Reply: {replyPacket.Id}, Data len: {replyPacket.Data.Length}");
+			foreach (var replyPacket in replyPackets)
+				Debug.WriteLine($"RX Reply: {replyPacket.Id}, Data len: {replyPacket.Data.Length}");
 		}
 		else
 		{
@@ -69,37 +69,50 @@ public class JdwpClient
 		}
 	}
 
-	async Task<ReplyPacket?> ReadReply(CancellationToken cancellationToken = default)
+	async Task<IEnumerable<T>> ReadReply<T>(CancellationToken cancellationToken = default) where T : ReplyPacket, new()
 	{
-		while (true)
+		List<T> packets = new List<T> ();
+		do
 		{
-			Memory<byte> buffer = new();
-
-			if (stream is not null)
+			if (stream != null)
 			{
-				Memory<byte> headerData = new byte[11];
+				byte[] headerData = new byte[11];
 
 				// Read the header data or bust
-				await stream.ReadExactlyAsync(headerData, cancellationToken);
-
-				Debug.WriteLine("RX Reply Header");
-
+				var read = await stream.ReadAsync (headerData, 0, headerData.Length, cancellationToken);
+				if (read != headerData.Length) {
+					break;
+				}
+				
 				// Get overall packet length from header
-				var packetLength = BinaryPrimitives.ReadUInt32BigEndian(buffer[0..3].Span);
-
+				ReadOnlyMemory<byte> h = headerData;
+				var packetLength = BinaryPrimitives.ReadUInt32BigEndian(h.Slice (0, 4).Span);
 				// The remaining packet buffer is total packet length minus header length
-				Memory<byte> packetData = new byte[packetLength - headerData.Length];
+				byte[] packetData = new byte[packetLength - headerData.Length];
 
-				// Read the remainder of the packet into the second buffer
-				await stream.ReadExactlyAsync(packetData, cancellationToken);
-
-				return new ReplyPacket(headerData, packetData);
+				if (packetData.Length > 0) {
+					// Read the remainder of the packet into the second buffer
+					int datalen = packetData.Length;
+					while (datalen > 0) {
+						read = await stream.ReadAsync (packetData, 0, datalen, cancellationToken);
+						datalen -= read;
+						if (read == 0)
+							break;
+					}
+					if (datalen > 0) {
+						break;
+					}
+				}
+				var packet = new T ();
+				packet.FromMemory (headerData, packetData);
+				packets.Add (packet);
 			}
 			else
 			{
-				return null;
+				break;
 			}
-		}
+		} while (stream.DataAvailable);
+		return packets;
 	}
 
 	public async Task DisconnectAsync()
