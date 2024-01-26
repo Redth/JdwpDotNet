@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET MonoGame DesktopGL",
+            "name": "Run",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build",

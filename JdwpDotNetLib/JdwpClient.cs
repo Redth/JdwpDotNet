@@ -62,6 +62,10 @@ public class JdwpClient
 
 			foreach (var replyPacket in replyPackets)
 				Debug.WriteLine($"RX Reply: {replyPacket.Id}, Data len: {replyPacket.Data.Length}");
+
+			// Keep the Connection for 1300 milliseconds, otherwise the Android OS ignores the connection!
+			//https://github.com/aosp-mirror/platform_frameworks_base/blob/main/core/java/android/os/Debug.java#L101C50-L101C54
+			await Task.Delay (1300);
 		}
 		else
 		{
